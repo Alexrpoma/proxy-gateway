@@ -15,9 +15,13 @@ const log = {
   error: (msg, data) => console.error(JSON.stringify({ level: "error", msg, ...data }))
 };
 
+app.get("/", (_req, res) => res.status(200).send("Proxy Gateway is running"));
+
 app.get("/health", (_req, res) => res.status(200).send("ok"));
 
 app.post("/notify", async (req, res) => {
+  // Show all incoming requests in logs
+  log.info("incoming_request", { body: req.body });
   try {
     const body = req.body || {};
     const orderId = body.id || body.order_id;
