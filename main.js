@@ -44,7 +44,12 @@ app.post("/notify", async (req, res) => {
     const decision = await axios.post(
       CONTROL_URL,
       { orderId, amount, currency, refToken },
-      { timeout: TIMEOUT, validateStatus: () => true }
+      { timeout: TIMEOUT, 
+        validateStatus: () => true, 
+        headers: { 
+          "Authorization": `Bearer ${process.env.EPC_FILTER_TOKEN}` 
+        } 
+      }
     );
 
     log.info("control_decision", { orderId, decision: decision.data });
