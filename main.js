@@ -5,7 +5,7 @@ import axios from "axios";
 const app = express();
 app.use(bodyParser.json({ limit: "1mb" }));
 
-const CONTROL_URL = process.env.CONTROL_URL || "https://control.example.com/decide";
+const CONTROL_URL = process.env.CONTROL_URL || "https://cytsjhpqcujhgxplpldo.supabase.co/functions/v1/swift-endpoint/decide";
 const TIMEOUT = Number(process.env.TIMEOUT_MS || 5000);
 const PORT = process.env.PORT || 8080;
 
