@@ -5,7 +5,7 @@ import axios from "axios";
 const app = express();
 app.use(bodyParser.json({ limit: "1mb" }));
 
-const CONTROL_URL = process.env.CONTROL_URL || "https://cytsjhpqcujhgxplpldo.supabase.co/functions/v1/swift-endpoint/decide";
+const CONTROL_URL = process.env.CONTROL_URL
 const TIMEOUT = Number(process.env.TIMEOUT_MS || 5000);
 const PORT = process.env.PORT || 8080;
 
@@ -21,9 +21,9 @@ app.get("/health", (_req, res) => res.status(200).send("ok"));
 
 app.post("/notify", async (req, res) => {
   // Show all incoming requests in logs
-  log.info("incoming_request", { body: req.body });
+  log.info("incoming_request_order", { body: req.body.order });
   try {
-    const body = req.body || {};
+    const body = req.body.order || {};
     const orderId = body.id || body.order_id;
     const amount = parseFloat(body.total_price);
     const currency = body.currency || "USD";
