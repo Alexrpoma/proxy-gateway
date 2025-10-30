@@ -47,6 +47,8 @@ app.post("/notify", async (req, res) => {
       { timeout: TIMEOUT, validateStatus: () => true }
     );
 
+    log.info("control_decision", { orderId, decision: decision.data });
+
     const data = decision.data || {};
     
     if (data.forward !== true) {
