@@ -47,7 +47,7 @@ app.post("/notify", async (req, res) => {
       { timeout: TIMEOUT, 
         validateStatus: () => true, 
         headers: { 
-          "Authorization": `Bearer ${process.env.EPC_FILTER_TOKEN}` 
+          "Authorization": `Bearer ${process.env.SUPABASE_ANON_KEY}` 
         } 
       }
     );
