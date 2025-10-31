@@ -21,12 +21,14 @@ app.get("/health", (_req, res) => res.status(200).send("ok"));
 
 app.post("/notify", async (req, res) => {
   // Show all incoming requests in logs
-  log.info("incoming_request_order", { body: req.body.order });
+  log.info("incoming_request", { body: req.body });
   try {
     const body = req.body.order || {};
     const orderId = body.id || body.order_id;
     const amount = parseFloat(body.total_price);
     const currency = body.currency || "USD";
+    const affid = body.checkout_params?.affid || body.affid;
+    const sub1 = body.checkout_params?.sub1 || body.sub1;
   
     // Nueva extraccion de cid
     const cid = [
@@ -44,7 +46,7 @@ app.post("/notify", async (req, res) => {
     // Consultar control
     const decision = await axios.post(
       CONTROL_URL,
-      { orderId, amount, currency, cid },
+      { orderId, amount, currency, cid, affid, sub1 },
       { timeout: TIMEOUT, 
         validateStatus: () => true, 
         headers: { 
@@ -53,7 +55,7 @@ app.post("/notify", async (req, res) => {
       }
     );
 
-    log.info("control_decision", { orderId, decision: decision.data });
+    log.info("control_decision", { orderId, decision: forward: decision.data.forward });
 
     const data = decision.data || {};
     
