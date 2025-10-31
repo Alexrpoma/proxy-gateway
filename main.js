@@ -55,7 +55,7 @@ app.post("/notify", async (req, res) => {
       }
     );
 
-    log.info("control_decision", { orderId, decision: forward: decision.data.forward });
+    log.info("control_decision", { orderId, decision: decision.data });
 
     const data = decision.data || {};
     
