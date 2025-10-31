@@ -27,23 +27,24 @@ app.post("/notify", async (req, res) => {
     const orderId = body.id || body.order_id;
     const amount = parseFloat(body.total_price);
     const currency = body.currency || "USD";
-    
-    // Mejor extracción de refToken
-    const refToken = [
-      body.ref_token,
-      body.evclid,
-      body.custom_attributes?.ref_token
+  
+    // Nueva extraccion de cid
+    const cid = [
+      body.cid,
+      body.CID,
+      body.checkout_params?.cid,
+      body.custom_attributes?.cid
     ].find(t => t && typeof t === "string" && t.trim());
 
-    if (!orderId || !refToken) {
-      log.info("missing_required_fields", { orderId, hasRefToken: !!refToken });
+    if (!orderId || !cid) {
+      log.info("missing_required_fields", { orderId, hasCid: !!cid  });
       return res.sendStatus(200);
     }
 
     // Consultar control
     const decision = await axios.post(
       CONTROL_URL,
-      { orderId, amount, currency, refToken },
+      { orderId, amount, currency, cid },
       { timeout: TIMEOUT, 
         validateStatus: () => true, 
         headers: { 
